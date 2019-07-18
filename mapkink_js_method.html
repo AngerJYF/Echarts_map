@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>地图联动</title>
+    <style>
+      .maplink  {width: 100%; height: 100%; margin: 0 auto; } 
+      .maplink div {display: inline-block; }
+       #china {width: 50%; height: 800px; border: 1px solid #ccc; }
+      #city {width: 45%; height: 800px; border: 1px solid green; } 
+    </style>
+</head>
+<body>
+<div class="maplink">
+    <div id="china"></div>
+    <div id="city"></div>
+</div>
+    <script type="text/javascript" src="./js/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="./plugins/echarts/echarts.js"></script>
+    <script type="text/javascript" src="./plugins/echarts/js/china.js"></script>
+    <script type="text/javascript" src="./plugins/echarts/js/province/shanghai.js"></script>
+    <script type="text/javascript" src="./plugins/echarts/js/province/neimenggu.js"></script>
+    <script type="text/javascript" src="./plugins/echarts/js/province/taiwan.js"></script>
+    <script type="text/javascript" src="./plugins/echarts/js/province/xianggang.js"></script>
+    <script type="text/javascript" src="./plugins/echarts/js/province/aomen.js"></script>
+    <script type="text/javascript" src="./plugins/echarts/js/province/chongqing.js"></script>
+    <script type="text/javascript" src="./plugins/echarts/js/province/tianjin.js"></script>
+    <script type="text/javascript" src="./plugins/echarts/js/province/xinjiang.js"></script>
+    <script type="text/javascript" src="./plugins/echarts/js/province/beijing.js"></script>
+    <script type="text/javascript" src="./plugins/echarts/js/province/ningxia.js"></script>
+    <script type="text/javascript" src="./plugins/echarts/js/province/qinghai.js"></script>
+    <script type="text/javascript" src="./plugins/echarts/js/province/gansu.js"></script>
+    <script type="text/javascript" src="./plugins/echarts/js/province/guangxi.js"></script>
+    <script type="text/javascript" src="./plugins/echarts/js/province/hainan.js"></script>
+    <script type="text/javascript" src="./plugins/echarts/js/province/sichuan.js"></script>
+    <script type="text/javascript" src="./plugins/echarts/js/province/guizhou.js"></script>
+    <script type="text/javascript" src="./plugins/echarts/js/province/yunnan.js"></script>
+    <script type="text/javascript" src="./plugins/echarts/js/province/xizang.js"></script>
+    <script type="text/javascript" src="./plugins/echarts/js/province/shanxi1.js"></script>
+    <script type="text/javascript" src="./plugins/echarts/js/province/guangdong.js"></script>
+    <script type="text/javascript" src="./plugins/echarts/js/province/hunan.js"></script>
+    <script type="text/javascript" src="./plugins/echarts/js/province/hubei.js"></script>
+    <script type="text/javascript" src="./plugins/echarts/js/province/henan.js"></script>
+    <script type="text/javascript" src="./plugins/echarts/js/province/shandong.js"></script>
+    <script type="text/javascript" src="./plugins/echarts/js/province/jiangxi.js"></script>
+    <script type="text/javascript" src="./plugins/echarts/js/province/fujian.js"></script>
+    <script type="text/javascript" src="./plugins/echarts/js/province/liaoning.js"></script>
+    <script type="text/javascript" src="./plugins/echarts/js/province/jilin.js"></script>
+    <script type="text/javascript" src="./plugins/echarts/js/province/heilongjiang.js"></script>
+    <script type="text/javascript" src="./plugins/echarts/js/province/jiangsu.js"></script>
+    <script type="text/javascript" src="./plugins/echarts/js/province/zhejiang.js"></script>
+    <script type="text/javascript" src="./plugins/echarts/js/province/anhui.js"></script>
+    <script type="text/javascript" src="./plugins/echarts/js/province/shanxi.js"></script>
+    <script type="text/javascript" src="./plugins/echarts/js/province/hebei.js"></script>
+    <script type="text/javascript">
+window.onload = function(){
+        //初始化地图
+        var chinaMap = echarts.init(document.getElementById("china"));
+        var chinacityMap = echarts.init(document.getElementById("city"));
+
+        // 设置全局 字体样式
+        //var screenScale = 2;
+        //var bigTitleTextStyle = {color : '#fff', fontSize : 20 * screenScale, fontWeight : 'normal', fontFamily : "微软雅黑"};
+        //var bigSubTitleTextStyle = {color : '#fff', fontSize : 15 * screenScale, fontWeight : 'normal', fontFamily : "微软雅黑"}
+        //var bigLegendTextStyle = {color : '#fff', fontSize : 16 * screenScale, fontWeight : 'normal', fontFamily : "微软雅黑"}
+        //var bigLabelTextStyle = {color : '#fff', fontSize : 15 * screenScale, fontWeight : 'normal', fontFamily : "微软雅黑"};
+        //var bigMapLabelTextStyle = {color : '#fff', fontSize : 12 * screenScale, fontWeight : 'normal', fontFamily : "微软雅黑"}
+        
+        // 全国地图基本设置
+        var chinaOtion = {
+                title:{
+                    text:'中国地图',
+                    top:20,
+                    left:'center'
+                },
+                visualMap: {
+                    show: true,
+                    left: '5%',
+                    bottom: '5%',
+                    textStyle: {
+                            color: "#FFF"
+                        },
+                },
+                tooltip: {
+                    trigger: 'item',
+                    show: true,
+                    showDelay: 0,
+                    hideDelay: 0,
+                    transitionDuration: 0,
+                    backgroundColor: 'transparent',
+                    formatter: '{b}',
+                    textStyle: {
+                        color: "#fff"
+                    },
+                    padding: [5, 15]
+                },
+                series:[{
+                    type: 'map',
+                    map: 'china',
+                    data: [],
+                    roam: true,
+                    label: { // 图形上的文本标签
+                        normal: {
+                            show: true,//显示省份标签
+                            textStyle: {
+                                color: "black"
+                            }
+                            //省份标签字体颜色
+                        },
+                        emphasis: {//对应的鼠标悬浮效果
+                            show: true,
+                            textStyle: {
+                                color: "yellow" //对应的鼠标悬浮区域文字颜色
+                            }
+                        }
+                    },
+                    itemStyle: {
+                        normal: {
+                            areaColor: 'rgba(56,234,255,0.05)',
+                            borderColor: '#38A6FF',
+                            color: "#fff"
+                        },
+                        emphasis: { //高亮状态下的多边形和标签样式
+                            areaColor: "rgba(20,205,255,0.6)", // 鼠标放上去区域高亮颜色
+                            borderColor: "#14CDFF",
+                        },
+                    },
+                }]
+            }
+
+        // 城市地图基本 设置
+        function showChinaCity(cityName){
+            var chinaCityOption = {
+                title:{
+                    text:cityName,
+                    top:20,
+                    left:'center'
+                },
+                backgroundColor: '#ccc',
+                    series: [
+                        {
+                            type: 'map',
+                            mapType: cityName,
+                            label: {
+                                normal: {
+                                    show:true,
+                                    textStyle: {
+                                        color: 'black'
+                                    },
+                                    borderColor: '#389BB7',
+                                    areaColor: '#fff',
+                                },
+                                emphasis: {
+                                    textStyle: {
+                                        color: 'yellow'
+                                    }
+                                }
+                            },
+                            itemStyle: {
+                                normal: {
+                                    textStyle: {
+                                        color: 'yellow'
+                                    },
+                                    borderColor: '#389BB7',
+                                    areaColor: '#fff',
+                                },
+                                emphasis: {
+                                    areaColor: '#389BB7',
+                                    borderWidth: 0
+                                }
+                            },
+                        }
+                    ]
+                }
+            chinacityMap.setOption(chinaCityOption)
+        }
+
+        showChinaCity('陕西');
+        chinaMap.on('click', function (params) {
+            cityName = params.name;
+            showChinaCity(cityName);
+        });
+
+
+        // 获取地图数据
+        $.getJSON('./plugins/echarts/json/china.json',function (data) {
+                echarts.registerMap("china", data);
+                console.log(data.features);
+                 chinaOtion.series[0].data = data.features.map(function (x) {
+                    console.log(x,x.properties.name,x.properties.cp);
+                        return {
+                            name: x.properties.name,
+                            value: x.properties.cp || 0,
+                            data: x
+                        };
+                    });
+                 console.log(chinaOtion.series[0].data);
+                chinaMap.setOption(chinaOtion);
+        })
+
+         // 浏览器窗口改变  地图重置
+        $(window).resize(function () {
+            chinaMap.resize();
+            chinacityMap.resize();
+        });
+
+}
+       
+    </script>
+</body>
+</html>
